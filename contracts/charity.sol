@@ -27,9 +27,9 @@ constructor(){
       
 }
 
-function transfor(address form ,address to,uint amount)public payable returns(bool){
+function transfor(address to,uint amount)public payable returns(bool){
     if(msg.value>=amount){
-     //transfer
+        payable(to).transfer(amount);
      return true;
     }
     return false;
@@ -37,7 +37,7 @@ function transfor(address form ,address to,uint amount)public payable returns(bo
 }
 function directDonation(string memory name ,uint amount, uint pId)public{
     Donator memory newD= Donator(msg.sender,name, amount, pId);
-    if(true==transfor(msg.sender, charity.charityAddress,amount)){
+    if(true==transfor(charity.charityAddress,amount)){
         donators.push(newD);
     }
 
