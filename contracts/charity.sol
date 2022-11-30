@@ -22,6 +22,17 @@ struct Donator{
 }
 Donator[] public donators;
 
+struct Request{
+    string description;
+    uint goalAmount;
+    uint fundedAmount;
+    address account;
+    bool succsess;
+    uint votesCount;
+}
+Request[] public requests;
+mapping(uint => mapping(address =>bool))aprovals;//what request| who aproves it
+
 constructor(){
       charity = charityOrganization("charityOf3Musketry",msg.sender,"Genuine Charity App");
       
@@ -33,7 +44,6 @@ function transfor(address to,uint amount)public payable returns(bool){
      return true;
     }
     return false;
-
 }
 function directDonation(string memory name ,uint amount, uint pId)public{
     Donator memory newD= Donator(msg.sender,name, amount, pId);
@@ -42,9 +52,17 @@ function directDonation(string memory name ,uint amount, uint pId)public{
     }
 
 }
-function voitingDonation()public{
+function payBeneficiary(uint id)public {
+    
+}
+function voitingDonation(uint requestIndex)public{
+    //if enough votes - > pay beneficiary 
 
 }
 
+function createFundingBeneficiaryRequest(string memory description, uint goalAmount, address account) public {
+    Request memory newRequest = Request(description,goalAmount, 0,account,false,0);
+    requests.push(newRequest);
+}
 
 }
