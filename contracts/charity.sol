@@ -14,7 +14,7 @@ struct Donator{
     address donatorAddress;
     string donarname;
     //amount of donation
-    uint amount;
+//    uint amount;
     //which project?
     uint projectId;
 
@@ -49,8 +49,8 @@ function transfor(address to,uint amount)public payable returns(bool){
     }
     return false;
 }
-function creatDonator(string memory name ,uint amount, uint pId)public returns(Donator memory){
-    Donator memory newD= Donator(msg.sender,name, amount, pId);
+function creatDonator(string memory name , uint pId)public returns(Donator memory){
+    Donator memory newD= Donator(msg.sender,name, pId);
     donators[msg.sender]=newD;
     return newD;
 
