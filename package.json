@@ -1,7 +1,15 @@
 {
   "dependencies": {
     "@openzeppelin/contracts": "^4.8.0",
-    "solc": "^0.8.17",
-    "truffle": "^5.1.65"
+    "ganache-cli": "^6.12.2",
+    "mocha": "^8.2.1",
+    "solc": "^0.4.17",
+    "truffle": "^5.1.65",
+    "truffle-hdwallet-provider": "^1.0.17",
+    "web3": "^1.0.0-beta.26"
+  },
+  "devDependencies": {
+    "chai": "^4.3.7",
+    "hardhat": "^2.12.3"
   }
 }

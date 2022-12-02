@@ -62,12 +62,14 @@ function donation(uint amount)public payable returns(bool){
     }
     return false;
 }
-function donarotVotesRequset(uint requestId,bool vote)public{
+function donarotVotesRequset(uint requestId,bool vote,uint fund)public{
     // vote just vote no tranfer money for now
     require(!aprovals[requestId][msg.sender]);
     aprovals[requestId][msg.sender]=vote;
     requests[requestId].totalvotes++;
-    if(vote==true)requests[requestId].votesCount++;
+    if(vote==true){
+        requests[requestId].fundedAmount+=fund;
+        requests[requestId].votesCount++;}
 
 }
 
@@ -84,7 +86,7 @@ function beneficiaryGetMoney(uint requestId) public returns(bool){
         //check if charity can transform the money
         if (msg.sender == charity.charityAddress){
             // pay money to benficiary
-            payable(requests[requestId].account).transfer(requests[requestId].goalAmount);
+            payable(requests[requestId].account).transfer(requests[requestId].fundedAmount);
             requests[requestId].succsess=true;
             return true;
             }
