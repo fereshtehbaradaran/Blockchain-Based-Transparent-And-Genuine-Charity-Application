@@ -14,7 +14,7 @@ struct Donator{
     address donatorAddress;
     string donarname;
     //amount of donation
-//    uint amount;
+    uint amount;
     //which project?
     uint projectId;
 
@@ -42,26 +42,18 @@ constructor(){
       aprovalsLenght=0;
 }
 
-function transfor(address to,uint amount)public payable returns(bool){
-    if(msg.value>=amount){
-        payable(to).transfer(amount);
-     return true;
-    }
-    return false;
-}
-function creatDonator(string memory name , uint pId)public returns(Donator memory){
-    Donator memory newD= Donator(msg.sender,name, pId);
+function creatDonator(string memory name ,uint amount, uint pId)public returns(Donator memory){
+    require(amount>0);
+    Donator memory newD= Donator(msg.sender,name,amount, pId);
     donators[msg.sender]=newD;
     return newD;
 
 }
-function donation(uint amount)public payable returns(bool){
-    if(msg.value>=amount){
-        payable(charity.charityAddress).transfer(amount);
-     return true;
-    }
-    return false;
+
+function make_donation(address donatorAddr)public payable{
+        payable(charity.charityAddress).transfer(donators[donatorAddr].amount);
 }
+
 function donarotVotesRequset(uint requestId,bool vote,uint fund)public{
     // vote just vote no tranfer money for now
     require(!aprovals[requestId][msg.sender]);
