@@ -19,7 +19,7 @@ struct Payment{
 
 }
 struct Product{
-    string productId;
+    uint productId;
     string productName;
     uint price;
     address seller;
@@ -60,6 +60,7 @@ struct Project{
     uint goalAmount;
     uint benificiaryId;
     uint[] ProjectRequests;
+    bool succsess;
 }
 
 Donator[] public donators;
@@ -74,28 +75,30 @@ mapping (uint=>address[])public donatorsOfProjects;// projectid => donators
 mapping(uint => mapping(address =>bool))public aprovals;//what request| who aproves it
 CoopStore public coStore;
 
-constructor(){
-
-      charity = charityOrganization("charityOf3Musketry",msg.sender,"Genuine Charity App");
+function createCharity(address addr)public{
+     charity = charityOrganization("charityOf3Musketry",addr,"Genuine Charity App");
 }
-function Genuine_Charity_DApp() public {  
+function testProducts() public {  
 
-      products[0] = Product("0","Computer",10,msg.sender);
-      products[1]  = Product("1","Laptop",20,msg.sender);
-      products[2] = Product("2","Food",5,msg.sender);
-      products[3]  = Product("3","Books",3,msg.sender);
+      products[0] = Product(0,"Computer",10,msg.sender);
+      products[1]  = Product(1,"Laptop",20,msg.sender);
+      products[2] = Product(2,"Food",5,msg.sender);
+      products[3]  = Product(3,"Books",3,msg.sender);
 
    //   coStore = CoopStore("Genuine_Charity_Cooperative_Store",msg.sender,products);
 
 }
 
-function add_product(string memory id,string memory product_name,uint price) public{
-    products[products.length] = Product(id,product_name,price,msg.sender);
+function add_product(string memory product_name,uint price) public{
+    Product memory newProduct = Product(products.length,product_name,price,msg.sender);
+    products.push(newProduct);
 }
 
 function charityPayProject(uint pId)public payable{
     require(msg.sender==charity.charityAddress);
+    require(!projects[pId].succsess);
     payable(beneficiaries[projects[pId].benificiaryId].account).transfer(projects[pId].goalAmount);
+    projects[pId].succsess=true;
 }
     
 function creatDonator(string memory name ,uint amount,uint pId)public {
@@ -117,7 +120,7 @@ function creatBenificiary()public{
 
 function benificiaryCreateProject(string memory description, uint benificiaryId, uint goalAmount)public{
     uint[] memory allRequests;
-    Project memory newProject=Project(projects.length,description,goalAmount,benificiaryId,allRequests);
+    Project memory newProject=Project(projects.length,description,goalAmount,benificiaryId,allRequests,false);
     projects.push(newProject);
 
 }
