@@ -1,6 +1,8 @@
 //SPDX-License-Identifier: MIT
 pragma solidity 0.8.17;
 
+import "@openzeppelin/contracts/utils/Strings.sol";
+
 contract Charity{
 
 struct charityOrganization{
@@ -98,7 +100,7 @@ function benificiaryBuyProduct(uint beneficiaryId,uint storeId,uint productId,ui
     require(products[productId].count>=amount  && amount>0);
     require(msg.sender==beneficiaries[beneficiaryId].account);
     payable(stores[storeId].storeAddress).transfer(amount*products[productId].price);
-    Payment_token newToken=Payment_token(payments.length,string(storeId),amount*products[productId].price,msg.sender);
+    Payment_token memory newToken=Payment_token(payments.length,Strings.toString(storeId),amount*products[productId].price,msg.sender);
     payments.push(newToken);
 
 
@@ -107,7 +109,7 @@ function creatCooStore(string memory name)public{
     require(msg.sender==charity.charityAddress);
     uint [] memory allProducts;
 //    uint [] memory unsoledTs;
-    CoopStore memory newStore=CoopStore(stores.length,name,charity.charityAddress,allProducts);
+    CoopStore memory newStore=CoopStore(stores.length,name,charity.charityAddress);
     stores.push(newStore);
 }
 
@@ -115,7 +117,7 @@ function add_product(string memory product_name,uint price,uint storeId,uint cou
     require(msg.sender==charity.charityAddress);
     require(count>0);
     Product memory newProduct = Product(products.length,product_name,price,count);
-    stores[storeId].products.push(products.length);
+   // stores[storeId].products.push(products.length);
     products.push(newProduct);
 }
 
@@ -139,8 +141,8 @@ function make_donation(uint donatorID)public payable{
 }
 
 function creatBenificiary()public{
-    uint[] memory tokens;
-    Benificiary memory newBenificiary = Benificiary(beneficiaries.length,msg.sender,tokens);
+//    uint[] memory tokens;
+    Benificiary memory newBenificiary = Benificiary(beneficiaries.length,msg.sender);
     beneficiaries.push(newBenificiary);
 }
 
