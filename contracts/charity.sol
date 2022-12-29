@@ -8,28 +8,30 @@ struct charityOrganization{
   address charityAddress;
   string Desc;
 }
+
 charityOrganization public charity;
 
-struct Payment{
+struct Payment_token{
+    uint tokenId;
    string description;
    uint amount;
    address receiver;
-   bool completed;
-
-
+  // bool sold;
 }
 struct Product{
     uint productId;
     string productName;
     uint price;
-    address seller;
+    uint count;
 }
 
 struct CoopStore{
-  string StoreName;
-  address StoreAddress;
-  uint[] products;
+    uint storeId;
+  string storeName;
+  address storeAddress;
+ // uint[] products;
 }
+
 struct Donator{
     address donatorAddress;
     string donarname;
@@ -52,7 +54,9 @@ struct Request{
 struct Benificiary{
     uint Id;
     address account;
+  //  uint[] tokens;
 }
+
 
 struct Project{
     uint Id;
@@ -67,8 +71,9 @@ Donator[] public donators;
 //mapping(address=>Donator) public donators;
 
 Project[] public projects;
-Payment[] public payments;
+Payment_token[] public payments;
 Product[] public products;
+CoopStore []public stores;
 Request[] public requests;
 Benificiary[] public beneficiaries;
 mapping (uint=>address[])public donatorsOfProjects;// projectid => donators 
@@ -78,23 +83,43 @@ CoopStore public coStore;
 function createCharity(address addr)public{
      charity = charityOrganization("charityOf3Musketry",addr,"Genuine Charity App");
 }
-function testProducts() public {  
+function testProducts() pure public {  
+      Product[] memory products_;
+      products_[0] = Product(0,"Computer",10,2);
+      products_[1]  = Product(1,"Laptop",20,3);
+      products_[2] = Product(2,"Food",5,1);
+      products_[3]  = Product(3,"Books",3,9);
 
-      products[0] = Product(0,"Computer",10,msg.sender);
-      products[1]  = Product(1,"Laptop",20,msg.sender);
-      products[2] = Product(2,"Food",5,msg.sender);
-      products[3]  = Product(3,"Books",3,msg.sender);
-
-   //   coStore = CoopStore("Genuine_Charity_Cooperative_Store",msg.sender,products);
+   // coStore = CoopStore("Genuine_Charity_Cooperative_Store",msg.sender,products);
 
 }
 
-function add_product(string memory product_name,uint price) public{
-    Product memory newProduct = Product(products.length,product_name,price,msg.sender);
+function benificiaryBuyProduct(uint beneficiaryId,uint storeId,uint productId,uint amount)public payable{
+    require(products[productId].count>=amount  && amount>0);
+    require(msg.sender==beneficiaries[beneficiaryId].account);
+    payable(stores[storeId].storeAddress).transfer(amount*products[productId].price);
+    Payment_token newToken=Payment_token(payments.length,string(storeId),amount*products[productId].price,msg.sender);
+    payments.push(newToken);
+
+
+}
+function creatCooStore(string memory name)public{
+    require(msg.sender==charity.charityAddress);
+    uint [] memory allProducts;
+//    uint [] memory unsoledTs;
+    CoopStore memory newStore=CoopStore(stores.length,name,charity.charityAddress,allProducts);
+    stores.push(newStore);
+}
+
+function add_product(string memory product_name,uint price,uint storeId,uint count) public{
+    require(msg.sender==charity.charityAddress);
+    require(count>0);
+    Product memory newProduct = Product(products.length,product_name,price,count);
+    stores[storeId].products.push(products.length);
     products.push(newProduct);
 }
 
-function charityPayProject(uint pId)public payable{
+function charityPayForProject(uint pId)public payable{
     require(msg.sender==charity.charityAddress);
     require(!projects[pId].succsess);
     payable(beneficiaries[projects[pId].benificiaryId].account).transfer(projects[pId].goalAmount);
@@ -114,7 +139,8 @@ function make_donation(uint donatorID)public payable{
 }
 
 function creatBenificiary()public{
-    Benificiary memory newBenificiary = Benificiary(beneficiaries.length,msg.sender);
+    uint[] memory tokens;
+    Benificiary memory newBenificiary = Benificiary(beneficiaries.length,msg.sender,tokens);
     beneficiaries.push(newBenificiary);
 }
 
@@ -146,7 +172,7 @@ function donarotVotesRequset(uint requestId,bool vote)public{
 function createFundingBeneficiaryRequest(string memory description, uint fundAmount,uint benificiaryID,uint projectId) public {
     Request memory newRequest = Request(requests.length,description,fundAmount,beneficiaries[benificiaryID].account,false,0,0,projectId);
     requests.push(newRequest);
-
+    projects[projectId].ProjectRequests.push(newRequest.Id);
 }
 
 function beneficiaryGetMoney(uint requestId) public payable{
@@ -159,8 +185,9 @@ function beneficiaryGetMoney(uint requestId) public payable{
             requests[requestId].succsess=true;
         }
 }
-   function withdraw(uint256 amount) public payable{
-        // This forwards 2300 gas, which may not be enough if the recipient
-        // is a contract and gas costs change.
-        payable(msg.sender).transfer(amount);}
+   function withdraw(uint tokenId) public payable{
+        require(msg.sender==charity.charityAddress && payments[tokenId].receiver!=charity.charityAddress);
+        payable(payments[tokenId].receiver).transfer(payments[tokenId].amount);
+        payments[tokenId].receiver=charity.charityAddress;
+        }
 }
