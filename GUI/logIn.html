@@ -43,7 +43,7 @@
                     <div class="group">
                         <button type="submit" class="button" onclick="login(event)" value="Sign In"> Sign In </button>
                     </div>
-                    <a class="btn nav-link" href="index.html">Back to Home</a>
+                    <a class="btn nav-link" href="home.html">Back to Home</a>
                 </form>
             </div>
         </div>
@@ -61,7 +61,7 @@
             var password = document.getElementById("pass").value;
             for (i=0; i<loginInfo.length; i++) {
                 if (username == loginInfo[i].username  && password == loginInfo[i].password) {
-                    document.location.href = "http://127.0.0.1:5500/admin/index.html";
+                    document.location.href = "http://127.0.0.1:5500/admin/home.html";
                 }
             }
             return true
