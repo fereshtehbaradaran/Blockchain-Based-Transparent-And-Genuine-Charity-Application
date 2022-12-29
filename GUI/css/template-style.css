@@ -127,25 +127,21 @@ hr {
 .form-control {
     border-radius: 0;
     border-color: #666666;
-	color: #CCC;
+    color: #CCC;
     background: transparent;
     padding: 12px 15px;
 }
 
 .form-control::placeholder {
-    /* Chrome, Firefox, Opera, Safari 10.1+ */
     color: #CCCCCC;
     opacity: 1;
-    /* Firefox */
 }
 
 .form-control:-ms-input-placeholder {
-    /* Internet Explorer 10-11 */
     color: #DDDDDD;
 }
 
 .form-control::-ms-input-placeholder {
-    /* Microsoft Edge */
     color: #DDDDDD;
 }
 
@@ -176,7 +172,7 @@ iframe {
 .form-control:focus {
     background-color: transparent;
     border-color: #CCCCCC;
-	color: #FFF;
+    color: #FFF;
     box-shadow: 0 0 0 0.2rem #cccccc14;
 }
 
@@ -194,6 +190,7 @@ p {
     .container {
         max-width: 1310px;
     }
+
     .tm-container-2 {
         max-width: 1170px;
     }
@@ -201,13 +198,16 @@ p {
 
 
 @media (max-width: 991px) {
+
     #google-map,
     .tm-contact-form {
         max-width: 100%;
     }
+
     .google-map-iframe {
         width: 100%;
     }
+
     .tm-timeline-item {
         margin-left: 25px;
     }
@@ -217,10 +217,12 @@ p {
     .tm-timeline-item-inner {
         flex-direction: column;
     }
+
     .tm-timeline-connector {
         width: 3px;
         height: 55px;
     }
+
     .tm-timeline-connector-vertical {
         margin-left: auto;
         margin-right: auto;
