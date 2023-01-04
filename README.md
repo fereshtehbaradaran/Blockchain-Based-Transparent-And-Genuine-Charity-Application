@@ -14,3 +14,12 @@ Donors view the charity project in browser and select an appropriate project to 
 
 ## Environment
 An Ethereum Testnet is the platform for blockchain. The client of users (wallet) is web-based, which runs on most modern browsers.
+
+</br>
+
+![home page](/GUI/img/home_page.png)
+
+</br>
+
+
+![stores](/GUI/img/stores.png)
