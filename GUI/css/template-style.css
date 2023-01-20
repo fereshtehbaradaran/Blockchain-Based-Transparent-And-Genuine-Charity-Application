@@ -22,10 +22,10 @@ h3 {
 .tm-site-logo {
     width: 40px;
     height: 40px;
-    border: 7px solid #1C2480;
     transform: rotate(45deg);
     display: inline-block;
     vertical-align: middle;
+    padding-bottom: 80px;
 }
 
 .tm-site-title {
