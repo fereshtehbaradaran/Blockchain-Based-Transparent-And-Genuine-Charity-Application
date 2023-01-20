@@ -5,64 +5,80 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/login_signup.css">
+    <link rel="stylesheet" href="css/navbar.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/templatemo-style.css">
     <title>Genuine Charity | Login</title>
 </head>
 
 <body>
     <header>
         <nav>
-           <div>
-              <i></i>
+           <div class="menu-icon">
+              <i class="fa fa-bars fa-2x"></i>
            </div>
-           <h2>Genuine Charity</h2>
+           <h2 class="logo">Genuine Charity</h2>
+           <div class="menu">
+              <ul>
+                 <li><a href="home.html">Home</a></li>
+                 <li><a href="projects.html">Charity Projects</a></li>
+                 <li><a href="store.html">Store</a></li>
+                 <li><a href="donor.html">Beneficiaries</a></li>
+              </ul>
+           </div>
         </nav>
-    </header>
-    <div>
-        <div>
-            <input id="tab-1" type="radio" name="tab" checked><label for="tab-1">Sign In</label>
-            <input id="tab-2" type="radio" name="tab"><label for="tab-2"></label>
-            <div>
-                <form>
-                    <div>
-                        <label for="user">Username</label>
-                        <input id="user" name="username" type="text" required>
+     </header>
+    <div class="login-wrap">
+        <div class="login-html">
+            <input id="tab-1" type="radio" name="tab" class="sign-in" checked><label for="tab-1" class="tab">Sign In</label>
+            <input id="tab-2" type="radio" name="tab" class="sign-up"><label for="tab-2" class="tab">Sign Up</label>
+            <div class="login-form">
+                <div class="sign-in-htm">
+                    <div class="group">
+                        <label for="user" class="label">Username</label>
+                        <input id="user" type="text" class="input">
                     </div>
-                    <div>
-                        <label for="pass">Password</label>
-                        <input id="pass" name="password" type="password" data-type="password" required>
+                    <div class="group">
+                        <label for="pass" class="label">Password</label>
+                        <input id="pass" type="password" class="input" data-type="password">
                     </div>
-                    <div>
-                        <input id="check" type="checkbox" checked>
-                        <label for="check"><span></span> Keep me Signed in</label>
+                    <div class="group">
+                        <input id="check" type="checkbox" class="check" checked>
+                        <label for="check"><span class="icon"></span> Keep me Signed in</label>
                     </div>
-                    <div>
-                        <button type="submit" onclick="login(event)" value="Sign In"> Sign In </button>
+                    <div class="group">
+                        <input type="submit" class="button" value="Sign In">
                     </div>
-                    <a href="home.html">Back to Home</a>
-                </form>
+                    <a class="btn nav-link btn-lg" href="index.html">Back to Home</a>
+                </div>
+                <div class="sign-up-htm">
+                    <div class="group">
+                        <label for="user" class="label">Username</label>
+                        <input id="user" type="text" class="input">
+                    </div>
+                    <div class="group">
+                        <label for="pass" class="label">Password</label>
+                        <input id="pass" type="password" class="input" data-type="password">
+                    </div>
+                    <div class="group">
+                        <label for="pass" class="label">Repeat Password</label>
+                        <input id="pass" type="password" class="input" data-type="password">
+                    </div>
+                    <div class="group">
+                        <label for="pass" class="label">Email Address</label>
+                        <input id="pass" type="text" class="input">
+                    </div>
+                    <div class="group">
+                        <input type="submit" class="button" value="Sign Up">
+                    </div>
+                    <a class="btn nav-link btn-lg" href="index.html">Back to Home</a>
+                </div>
             </div>
         </div>
     </div>
-    <script>
-        function login (event) {
-            event.preventDefault();
-            var loginInfo = [
-                {
-                    username: "admin",
-                    password: "1234",
-                }
-            ]
-            var username = document.getElementById("user").value;
-            var password = document.getElementById("pass").value;
-            for (i=0; i<loginInfo.length; i++) {
-                if (username == loginInfo[i].username  && password == loginInfo[i].password) {
-                    document.location.href = "http://127.0.0.1:5500/admin/home.html";
-                }
-            }
-            return true
-        }
-    </script>
+    <script src="js/navbar.js"></script>
 </body>
 
 </html>
