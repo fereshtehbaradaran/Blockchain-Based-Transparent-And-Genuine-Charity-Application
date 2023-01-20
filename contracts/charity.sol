@@ -14,58 +14,60 @@ struct charityOrganization{
 charityOrganization public charity;
 
 struct Payment_token{
-    uint tokenId;
+    uint256 tokenId;
    string description;
-   uint amount;
+   uint256 amount;
    address receiver;
+   uint256 productId;
   // bool sold;
 }
 struct Product{
-    uint productId;
+    uint256 productId;
     string productName;
-    uint price;
-    uint count;
+    uint256 price;
+    uint256 count;
+    uint256 storeId;
 }
 
 struct CoopStore{
-    uint storeId;
+    uint256 storeId;
   string storeName;
   address storeAddress;
- // uint[] products;
+ // uint256[] products;
 }
 
 struct Donator{
     address donatorAddress;
     string donarname;
     //amount of donation
-    uint amount;
-    uint projectId;
+    uint256 amount;
+    uint256 projectId;
 }
 
 struct Request{
-    uint Id;
+    uint256 Id;
     string description;
-    uint fundAmount;
+    uint256 fundAmount;
     address account;
     bool succsess;
-    uint votesCount;
-    uint totalvotes;
-    uint projectId;
+    uint256 votesCount;
+    uint256 totalvotes;
+    uint256 projectId;
     
 }
 struct Benificiary{
-    uint Id;
+    uint256 Id;
     address account;
-  //  uint[] tokens;
+  //  uint256[] tokens;
 }
 
 
 struct Project{
-    uint Id;
+    uint256 Id;
     string description;
-    uint goalAmount;
-    uint benificiaryId;
-    uint[] ProjectRequests;
+    uint256 goalAmount;
+    uint256 benificiaryId;
+    uint256[] ProjectRequests;
     bool succsess;
 }
 
@@ -78,8 +80,8 @@ Product[] public products;
 CoopStore []public stores;
 Request[] public requests;
 Benificiary[] public beneficiaries;
-mapping (uint=>address[])public donatorsOfProjects;// projectid => donators 
-mapping(uint => mapping(address =>bool))public aprovals;//what request| who aproves it
+mapping (uint256=>address[])public donatorsOfProjects;// projectid => donators 
+mapping(uint256 => mapping(address =>bool))public aprovals;//what request| who aproves it
 CoopStore public coStore;
 
 function createCharity(address addr)public{
@@ -87,79 +89,79 @@ function createCharity(address addr)public{
 }
 function testProducts() pure public {  
       Product[] memory products_;
-      products_[0] = Product(0,"Computer",10,2);
-      products_[1]  = Product(1,"Laptop",20,3);
-      products_[2] = Product(2,"Food",5,1);
-      products_[3]  = Product(3,"Books",3,9);
+      products_[0] = Product(0,"Computer",10,2,0);
+      products_[1]  = Product(1,"Laptop",20,3,0);
+      products_[2] = Product(2,"Food",5,1,0);
+      products_[3]  = Product(3,"Books",3,9,0);
 
    // coStore = CoopStore("Genuine_Charity_Cooperative_Store",msg.sender,products);
 
 }
 
-function benificiaryBuyProduct(uint beneficiaryId,uint storeId,uint productId,uint amount)public payable{
+function benificiaryBuyProduct(uint256 beneficiaryId,uint256 storeId,uint256 productId,uint256 amount)public payable{
     require(products[productId].count>=amount  && amount>0);
     require(msg.sender==beneficiaries[beneficiaryId].account);
     payable(stores[storeId].storeAddress).transfer(amount*products[productId].price);
-    Payment_token memory newToken=Payment_token(payments.length,Strings.toString(storeId),amount*products[productId].price,msg.sender);
+    Payment_token memory newToken=Payment_token(payments.length,Strings.toString(storeId),amount*products[productId].price,msg.sender,productId);
     payments.push(newToken);
 
 
 }
 function creatCooStore(string memory name)public{
     require(msg.sender==charity.charityAddress);
-    uint [] memory allProducts;
-//    uint [] memory unsoledTs;
+   // uint256 [] memory allProducts;
+//    uint256 [] memory unsoledTs;
     CoopStore memory newStore=CoopStore(stores.length,name,charity.charityAddress);
     stores.push(newStore);
 }
 
-function add_product(string memory product_name,uint price,uint storeId,uint count) public{
+function add_product(string memory product_name,uint256 price,uint256 storeId,uint256 count) public{
     require(msg.sender==charity.charityAddress);
     require(count>0);
-    Product memory newProduct = Product(products.length,product_name,price,count);
+    Product memory newProduct = Product(products.length,product_name,price,count,storeId);
    // stores[storeId].products.push(products.length);
     products.push(newProduct);
 }
 
-function charityPayForProject(uint pId)public payable{
+function charityPayForProject(uint256 pId)public payable{
     require(msg.sender==charity.charityAddress);
     require(!projects[pId].succsess);
     payable(beneficiaries[projects[pId].benificiaryId].account).transfer(projects[pId].goalAmount);
     projects[pId].succsess=true;
 }
     
-function creatDonator(string memory name ,uint amount,uint pId)public {
+function creatDonator(string memory name ,uint256 amount,uint256 pId)public {
     require(amount>0);
     Donator memory newD= Donator(msg.sender,name,amount,pId);
     donators.push(newD);
     donatorsOfProjects[pId].push(msg.sender);
 }
 
-function make_donation(uint donatorID)public payable{
+function make_donation(uint256 donatorID)public payable{
     require(donators[donatorID].donatorAddress==msg.sender);
     payable(charity.charityAddress).transfer(donators[donatorID].amount);
 }
 
 function creatBenificiary()public{
-//    uint[] memory tokens;
+//    uint256[] memory tokens;
     Benificiary memory newBenificiary = Benificiary(beneficiaries.length,msg.sender);
     beneficiaries.push(newBenificiary);
 }
 
-function benificiaryCreateProject(string memory description, uint benificiaryId, uint goalAmount)public{
-    uint[] memory allRequests;
+function benificiaryCreateProject(string memory description, uint256 benificiaryId, uint256 goalAmount)public{
+    uint256[] memory allRequests;
     Project memory newProject=Project(projects.length,description,goalAmount,benificiaryId,allRequests,false);
     projects.push(newProject);
 
 }
 
-function donarotVotesRequset(uint requestId,bool vote)public{
+function donarotVotesRequset(uint256 requestId,bool vote)public{
 //seach in the donators of this project 
-    uint pId=requests[requestId].projectId;
+    uint256 pId=requests[requestId].projectId;
     address[] memory allDonators=donatorsOfProjects[pId];
 
     require(!aprovals[requestId][msg.sender]);
-    for (uint i = 0; i < allDonators.length; i++) {
+    for (uint256 i = 0; i < allDonators.length; i++) {
         if(allDonators[i]==msg.sender)
         aprovals[requestId][msg.sender]=vote;
     }
@@ -171,13 +173,13 @@ function donarotVotesRequset(uint requestId,bool vote)public{
 
 }
 
-function createFundingBeneficiaryRequest(string memory description, uint fundAmount,uint benificiaryID,uint projectId) public {
+function createFundingBeneficiaryRequest(string memory description, uint256 fundAmount,uint256 benificiaryID,uint256 projectId) public {
     Request memory newRequest = Request(requests.length,description,fundAmount,beneficiaries[benificiaryID].account,false,0,0,projectId);
     requests.push(newRequest);
     projects[projectId].ProjectRequests.push(newRequest.Id);
 }
 
-function beneficiaryGetMoney(uint requestId) public payable{
+function beneficiaryGetMoney(uint256 requestId) public payable{
     //if enough votes - > pay beneficiary 
 //    requests[requestId].fundedAmount+=amount;
     require(requests[requestId].votesCount>=(requests[requestId].totalvotes/2));
@@ -187,9 +189,10 @@ function beneficiaryGetMoney(uint requestId) public payable{
             requests[requestId].succsess=true;
         }
 }
-   function withdraw(uint tokenId) public payable{
+   function withdraw(uint256 tokenId) public payable{
         require(msg.sender==charity.charityAddress && payments[tokenId].receiver!=charity.charityAddress);
         payable(payments[tokenId].receiver).transfer(payments[tokenId].amount);
         payments[tokenId].receiver=charity.charityAddress;
+        products[payments[tokenId].productId].count+=1;
         }
 }
