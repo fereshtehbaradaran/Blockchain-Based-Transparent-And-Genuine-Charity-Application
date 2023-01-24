@@ -32,7 +32,7 @@ An Ethereum Testnet is the platform for blockchain. The client of users (wallet)
 </br>
 
 
-![stores](/GUI/img/stores2.png)
+![stores](/GUI/img/stores.png)
 
 </br>
 
