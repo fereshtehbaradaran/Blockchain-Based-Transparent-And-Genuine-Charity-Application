@@ -60,8 +60,6 @@ struct Benificiary{
     address account;
   //  uint256[] tokens;
 }
-
-
 struct Project{
     uint256 Id;
     string description;
@@ -101,7 +99,9 @@ function testProducts() pure public {
 function benificiaryBuyProduct(uint256 beneficiaryId,uint256 storeId,uint256 productId,uint256 amount)public payable{
     require(products[productId].count>=amount  && amount>0);
     require(msg.sender==beneficiaries[beneficiaryId].account);
+
     payable(stores[storeId].storeAddress).transfer(amount*products[productId].price);
+    
     Payment_token memory newToken=Payment_token(payments.length,Strings.toString(storeId),amount*products[productId].price,msg.sender,productId);
     payments.push(newToken);
 
@@ -119,14 +119,15 @@ function add_product(string memory product_name,uint256 price,uint256 storeId,ui
     require(msg.sender==charity.charityAddress);
     require(count>0);
     Product memory newProduct = Product(products.length,product_name,price,count,storeId);
-   // stores[storeId].products.push(products.length);
     products.push(newProduct);
 }
 
-function charityPayForProject(uint256 pId)public payable{
-    require(msg.sender==charity.charityAddress);
+function charityPayForProject(uint256 pId)public{
+    require(msg.sender== beneficiaries[projects[pId].benificiaryId].account);
     require(!projects[pId].succsess);
-    payable(beneficiaries[projects[pId].benificiaryId].account).transfer(projects[pId].goalAmount);
+    (bool callSuccess,)=payable(msg.sender).call{value:projects[pId].goalAmount}("");
+    require(callSuccess);
+//    payable(beneficiaries[projects[pId].benificiaryId].account).transfer(projects[pId].goalAmount);
     projects[pId].succsess=true;
 }
     
@@ -166,7 +167,6 @@ function donarotVotesRequset(uint256 requestId,bool vote)public{
         aprovals[requestId][msg.sender]=vote;
     }
 
-
     requests[requestId].totalvotes++;
     if(vote==true){
         requests[requestId].votesCount++;}
@@ -183,15 +183,19 @@ function beneficiaryGetMoney(uint256 requestId) public payable{
     //if enough votes - > pay beneficiary 
 //    requests[requestId].fundedAmount+=amount;
     require(requests[requestId].votesCount>=(requests[requestId].totalvotes/2));
-        if (msg.sender == charity.charityAddress){
+      if (msg.sender == requests[requestId].account){
             // pay money to benficiary
-            payable(requests[requestId].account).transfer(requests[requestId].fundAmount);
+            (bool callSuccess,)=payable(msg.sender).call{value:msg.value}("");
+            require(callSuccess);
             requests[requestId].succsess=true;
         }
 }
-   function withdraw(uint256 tokenId) public payable{
-        require(msg.sender==charity.charityAddress && payments[tokenId].receiver!=charity.charityAddress);
-        payable(payments[tokenId].receiver).transfer(payments[tokenId].amount);
+   function withdraw(uint256 tokenId) public{
+        require(payments[tokenId].receiver!=charity.charityAddress);
+        require(payments[tokenId].receiver==msg.sender);
+        (bool callSuccess,)=payable(msg.sender).call{value:payments[tokenId].amount}("");
+        require(callSuccess);
+        //payable(payments[tokenId].receiver).transfer(payments[tokenId].amount);
         payments[tokenId].receiver=charity.charityAddress;
         products[payments[tokenId].productId].count+=1;
         }
