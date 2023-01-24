@@ -79,7 +79,14 @@ hr {
 
 .tm-timeline-item {
     margin-left: 70px;
+    text-align: left;
+    transition: .4s;
 }
+
+.tm-timeline-item:hover{
+    transform: translate(8px, 0px);
+    transition: .6s;
+    }
 
 .tm-timeline-item-inner {
     display: flex;
