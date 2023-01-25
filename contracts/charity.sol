@@ -108,7 +108,7 @@ function benificiaryBuyProduct(uint256 beneficiaryId,uint256 storeId,uint256 pro
 
 }
 function creatCooStore(string memory name)public{
-    require(msg.sender==charity.charityAddress);
+   // require(msg.sender==charity.charityAddress);
    // uint256 [] memory allProducts;
 //    uint256 [] memory unsoledTs;
     CoopStore memory newStore=CoopStore(stores.length,name,charity.charityAddress);
@@ -116,7 +116,7 @@ function creatCooStore(string memory name)public{
 }
 
 function add_product(string memory product_name,uint256 price,uint256 storeId,uint256 count) public{
-    require(msg.sender==charity.charityAddress);
+ //   require(msg.sender==charity.charityAddress);
     require(count>0);
     Product memory newProduct = Product(products.length,product_name,price,count,storeId);
     products.push(newProduct);

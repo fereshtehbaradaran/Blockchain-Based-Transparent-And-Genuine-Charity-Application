@@ -39,7 +39,7 @@ signUpButton.addEventListener("click", (e) => {
         console.log(password);
       if (password === userExistance) {
         alert("You have successfully logged in.");
-    } 
+        } 
       }
     else{
       alert("Please sign up!");
@@ -56,6 +56,7 @@ fetch("../jsons/abi.json")
   .then(data=>{
       abiStr=data;
   });
+
 
 window.addEventListener('load', async () => {
     // New web3 provider
@@ -80,14 +81,14 @@ window.addEventListener('load', async () => {
         console.log('No web3 provider detected');
     }
   });
-  console.log (window.web3.currentProvider)
+  //console.log (window.web3.currentProvider)
   
 
 
   // contractAddress and abi are setted after contract deploy
   var contractAddress = '0xf92837155D77cCCBc600326eE9CBb9007e2160AC';
-  var abi = JSON.parse(abiStr);
-  
+  var abi =abiStr;// JSON.parse(abiStr);
+
   //contract instance
   contract = new web3.eth.Contract(abi, contractAddress);
   

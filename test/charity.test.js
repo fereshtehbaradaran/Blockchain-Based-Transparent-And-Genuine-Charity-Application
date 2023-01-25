@@ -1,3 +1,4 @@
+require("@nomiclabs/hardhat-ganache");
 const Web3 = require('web3');
 const web3 = new Web3("http://localhost:8545");
 
@@ -9,7 +10,8 @@ var chai = require("chai");
 const expect = chai.expect;
 let account;
 
-
+//truffle test charity2.test.js
+// npx jest charity2.test.js
 before(async() => {
   Charity= await charity.new();
 
@@ -32,7 +34,7 @@ contract("Charity Test", async accounts => {
    });
  
     it("create donators",async () => {
-      const donator = await Charity.creatDonator('donar 1',4,{ from:accounts[1]});
+      const donator = await Charity.creatDonator('donar 1',400000000,{ from:accounts[1]});
       assert.ok(donator);
     });
  
