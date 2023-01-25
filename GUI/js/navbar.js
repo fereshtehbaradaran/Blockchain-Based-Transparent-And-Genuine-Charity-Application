@@ -1,31 +1,29 @@
-
-
-  const signUpButton = document.getElementById("buttonSignUp");
-  signUpButton.addEventListener("click", (e) => {
-      e.preventDefault();
-      const username = document.getElementById("userSignUp").value;
-      const password = document.getElementById("passSignUp").value;
-      const password2 = document.getElementById("pass2SignUp").value;
+const signUpButton = document.getElementById("buttonSignUp");
+signUpButton.addEventListener("click", (e) => {
+    e.preventDefault();
+    const username = document.getElementById("userSignUp").value;
+    const password = document.getElementById("passSignUp").value;
+    const password2 = document.getElementById("pass2SignUp").value;
+    
+    if (password==password2 && username!=null){
       
-      if (password==password2 && username!=null){
-        
-          if(null==localStorage.getItem(username)){
-            var userInfo=new Array(password.toString());
-            localStorage.setItem(username, userInfo);//store type 
-            alert("You have successfully signed up.");
-          }
-        else{
-          alert("You have already signed up! please sign in");
-  
-          }
-        location.reload();
-  
-      }
-      else {
-        loginErrorMsg.style.opacity = 1;
+        if(null==localStorage.getItem(username)){
+          var userInfo=new Array(password.toString());
+          localStorage.setItem(username, userInfo);//store type 
+          alert("You have successfully signed up.");
+        }
+      else{
+        alert("You have already signed up! please sign in");
+
+        }
+      location.reload();
+
     }
-  });
-  
+    else {
+      loginErrorMsg.style.opacity = 1;
+  }
+});
+
   
   
   const loginButton = document.getElementById("buttonLogin");
@@ -57,9 +55,7 @@ fetch("../jsons/abi.json")
   .then(response=>response.json())
   .then(data=>{
       abiStr=data;
-      console.log(abiStr);
-  })
-
+  });
 
 window.addEventListener('load', async () => {
     // New web3 provider
