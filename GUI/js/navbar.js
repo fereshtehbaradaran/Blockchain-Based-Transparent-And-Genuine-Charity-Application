@@ -88,7 +88,7 @@ window.addEventListener('load', async () => {
   // contractAddress and abi are setted after contract deploy
   var contractAddress = '0xf92837155D77cCCBc600326eE9CBb9007e2160AC';
   var abi =abiStr;// JSON.parse(abiStr);
-
+//  abi = require("../jsons/abi.json"); 
   //contract instance
   contract = new web3.eth.Contract(abi, contractAddress);
   

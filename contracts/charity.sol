@@ -124,7 +124,7 @@ function add_product(string memory product_name,uint256 price,uint256 storeId,ui
 
 function charityPayForProject(uint256 pId)public{
     require(msg.sender== beneficiaries[projects[pId].benificiaryId].account);
-    require(!projects[pId].succsess);
+    require(projects[pId].succsess==true);
     (bool callSuccess,)=payable(msg.sender).call{value:projects[pId].goalAmount}("");
     require(callSuccess);
 //    payable(beneficiaries[projects[pId].benificiaryId].account).transfer(projects[pId].goalAmount);
@@ -141,6 +141,8 @@ function creatDonator(string memory name ,uint256 amount,uint256 pId)public {
 function make_donation(uint256 donatorID)public payable{
     require(donators[donatorID].donatorAddress==msg.sender);
     payable(charity.charityAddress).transfer(donators[donatorID].amount);
+    if(donators[donatorID].amount>=projects[donators[donatorID].projectId].goalAmount)
+        projects[donators[donatorID].projectId].succsess=true;
 }
 
 function creatBenificiary()public{
