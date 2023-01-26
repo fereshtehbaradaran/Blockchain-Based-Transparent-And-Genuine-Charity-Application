@@ -1,8 +1,10 @@
 {
   "dependencies": {
     "@openzeppelin/contracts": "^4.8.0",
+    "@truffle/contract": "^4.6.12",
     "ganache-cli": "^6.12.2",
     "mocha": "^8.2.1",
+    "mongodb": "^4.13.0",
     "solc": "^0.4.17",
     "truffle": "^5.1.65",
     "truffle-hdwallet-provider": "^1.0.17",

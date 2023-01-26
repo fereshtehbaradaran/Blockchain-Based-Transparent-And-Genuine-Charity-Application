@@ -1,3 +1,8 @@
+//const contract = require("@truffle/contract");
+//const charity = require("../../migrations/charity");
+
+const charity = require("../../migrations/charity");
+
 const signUpButton = document.getElementById("buttonSignUp");
 signUpButton.addEventListener("click", (e) => {
     e.preventDefault();
@@ -57,7 +62,6 @@ fetch("../jsons/abi.json")
       abiStr=data;
   });
 
-
 window.addEventListener('load', async () => {
     // New web3 provider
     if (window.ethereum) {
@@ -82,17 +86,25 @@ window.addEventListener('load', async () => {
     }
   });
   //console.log (window.web3.currentProvider)
-  
-
 
   // contractAddress and abi are setted after contract deploy
   var contractAddress = '0xf92837155D77cCCBc600326eE9CBb9007e2160AC';
   var abi =abiStr;// JSON.parse(abiStr);
 //  abi = require("../jsons/abi.json"); 
   //contract instance
-  contract = new web3.eth.Contract(abi, contractAddress);
-  
-  // Accounts
+
+
+
+  const web3 = new Web3(window.ethereum);
+  var Charity;
+  const main = async () => {
+      Charity = new web3.eth.Contract(abi, contractAddress);
+//      Charity.methods.creatDonator("ayda",,0)
+    //    const tokenURI = await contract.methods.tokenURI(tokenId).call();
+  //  console.log({ tokenURI });
+  };
+
+// Accounts
   var account;
   
   web3.eth.getAccounts(function(err, accounts) {
@@ -107,7 +119,21 @@ window.addEventListener('load', async () => {
     account = accounts[0];
     console.log('Account: ' + account);
     web3.eth.defaultAccount = account;
+    const creatBenificiary_ = async () => {
+    const benificiary0 =await charity.methods.creatBenificiary("benificiary",{from:account[1]}).call();
+    
+
+
+  }
+  const creatDonator = async () => {
+  
+   // const donator0 =await charity.methods.creatDonator("donator0",web3.utils.toWei( web3.utils.toBN(8), "ether"),0,{from:account[2]}).call();
+  }
   });
+
+
+//Smart contract functions
+
 
 
 /*var loginInfo;
