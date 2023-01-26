@@ -1,7 +1,6 @@
 //const contract = require("@truffle/contract");
 //const charity = require("../../migrations/charity");
 
-const charity = require("../../migrations/charity");
 
 const signUpButton = document.getElementById("buttonSignUp");
 signUpButton.addEventListener("click", (e) => {
@@ -120,7 +119,7 @@ window.addEventListener('load', async () => {
     console.log('Account: ' + account);
     web3.eth.defaultAccount = account;
     const creatBenificiary_ = async () => {
-    const benificiary0 =await charity.methods.creatBenificiary("benificiary",{from:account[1]}).call();
+      const benificiary0 =await charity.methods.creatBenificiary("benificiary",{from:account[1]}).call();
     
 
 
